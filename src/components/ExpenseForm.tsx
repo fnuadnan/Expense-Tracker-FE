@@ -1,6 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { Expense } from "../App";
+
+interface Props {
+  addExpense: (expense: Expense) => void;
+}
 
 const expenseFormSchema = z.object({
   description: z.string().min(3),
@@ -13,7 +18,7 @@ const expenseFormSchema = z.object({
 });
 type ExpenseformData = z.infer<typeof expenseFormSchema>;
 
-const ExpenseForm = () => {
+const ExpenseForm = ({ addExpense }: Props) => {
   const {
     register,
     handleSubmit,
@@ -22,7 +27,7 @@ const ExpenseForm = () => {
     resolver: zodResolver(expenseFormSchema),
   });
   return (
-    <form className="p-3" onSubmit={handleSubmit((data) => console.log(data))}>
+    <form className="p-3" onSubmit={handleSubmit((data) => addExpense(data))}>
       <div className="mb-3">
         <label className="form-label" htmlFor="description">
           Description
