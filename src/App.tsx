@@ -1,12 +1,6 @@
 import { useState } from "react";
 import ExpenseForm from "./components/ExpenseForm";
-
-export interface Expense {
-  _id?: number;
-  description: string;
-  amount: number;
-  category: "Entertainment" | "Utilities" | "Groceries";
-}
+import { Expense } from "./components/types/ExpenseTypes";
 
 const App = () => {
   const [expenses, setExpenses] = useState<Expense[]>([
@@ -14,11 +8,11 @@ const App = () => {
     { _id: 2, description: "hey", amount: 40, category: "Utilities" },
     { _id: 3, description: "bfa", amount: 60, category: "Entertainment" },
   ]);
-  console.log(expenses)
+  console.log(expenses);
   return (
     <div>
       <ExpenseForm
-        addExpense={(expense) => setExpenses([...expenses, expense])}
+        addExpense={(expense: Expense) => setExpenses([...expenses, expense])}
       />
     </div>
   );

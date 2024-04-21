@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Expense } from "../App";
+import { Expense, ExpenseFormData } from "./types/ExpenseTypes";
 
 interface Props {
   addExpense: (expense: Expense) => void;
@@ -16,18 +16,20 @@ const expenseFormSchema = z.object({
     errorMap: () => ({ message: "Category is required" }),
   }),
 });
-type ExpenseformData = z.infer<typeof expenseFormSchema>;
 
 const ExpenseForm = ({ addExpense }: Props) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<ExpenseformData>({
+  } = useForm<ExpenseFormData>({
     resolver: zodResolver(expenseFormSchema),
   });
   return (
-    <form className="p-3" onSubmit={handleSubmit((data) => addExpense(data))}>
+    <form
+      className="p-3"
+      onSubmit={handleSubmit((data: Expense) => addExpense(data))}
+    >
       <div className="mb-3">
         <label className="form-label" htmlFor="description">
           Description
