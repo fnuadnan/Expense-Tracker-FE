@@ -1,6 +1,6 @@
 import { useState } from "react";
 import ExpenseForm from "./components/ExpenseForm";
-import { Expense } from "./components/types/ExpenseTypes";
+import { Expense } from "./types/ExpenseTypes";
 
 const App = () => {
   const [expenses, setExpenses] = useState<Expense[]>([

@@ -1,4 +1,3 @@
-
 export interface Expense {
   _id?: number;
   description: string;

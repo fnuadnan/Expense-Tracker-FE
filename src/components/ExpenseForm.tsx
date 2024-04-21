@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Expense, ExpenseFormData } from "./types/ExpenseTypes";
+import { Expense, ExpenseFormData } from "../types/ExpenseTypes";
 
 interface Props {
   addExpense: (expense: Expense) => void;
@@ -30,6 +30,7 @@ const ExpenseForm = ({ addExpense }: Props) => {
       className="p-3"
       onSubmit={handleSubmit((data: Expense) => addExpense(data))}
     >
+      s
       <div className="mb-3">
         <label className="form-label" htmlFor="description">
           Description
