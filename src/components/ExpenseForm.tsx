@@ -30,7 +30,6 @@ const ExpenseForm = ({ addExpense }: Props) => {
       className="p-3"
       onSubmit={handleSubmit((data: Expense) => addExpense(data))}
     >
-      s
       <div className="mb-3">
         <label className="form-label" htmlFor="description">
           Description
