@@ -1,4 +1,4 @@
-import { Categories } from "../types/ExpenseTypes";
+import { Categories } from "../entities/ExpenseTypes";
 
 interface Props {
   onSelectedCategory: (category: Categories) => void;

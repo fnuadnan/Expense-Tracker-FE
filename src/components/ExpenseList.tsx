@@ -1,11 +1,7 @@
-import { Expense } from "../types/ExpenseTypes";
+import useExpenses from "../hooks/useExpenses";
 
-interface Props {
-  expenses: Expense[];
-  onDelete: (expenseId: number) => void;
-}
-
-const ExpenseList = ({ expenses, onDelete }: Props) => {
+const ExpenseList = () => {
+  const { data } = useExpenses();
   return (
     <table className="table table-bordered">
       <thead>
@@ -17,7 +13,7 @@ const ExpenseList = ({ expenses, onDelete }: Props) => {
         </tr>
       </thead>
       <tbody>
-        {expenses.map((expense, index) => (
+        {data?.map((expense, index) => (
           <tr key={index}>
             <td>{expense.description}</td>
             <td>{expense.amount}$</td>
@@ -25,7 +21,7 @@ const ExpenseList = ({ expenses, onDelete }: Props) => {
             <td>
               <button
                 className="btn btn-outline-danger"
-                onClick={() => expense._id && onDelete(expense._id)}
+                // onClick={() => expense._id && onDelete(expense._id)}
               >
                 Delete
               </button>
@@ -37,7 +33,7 @@ const ExpenseList = ({ expenses, onDelete }: Props) => {
         <tr>
           <td>Total</td>
           <td colSpan={4}>
-            {expenses.reduce((acc, ex) => acc + ex.amount, 0).toFixed(2)}$
+            {data?.reduce((acc, ex) => acc + ex.amount, 0).toFixed(2)}$
           </td>
         </tr>
       </tfoot>

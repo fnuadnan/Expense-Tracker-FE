@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Expense, ExpenseFormData } from "../types/ExpenseTypes";
+import { Expense, ExpenseFormData } from "../entities/ExpenseTypes";
 
 interface Props {
   addExpense: (expense: Expense) => void;

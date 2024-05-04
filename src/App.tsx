@@ -2,7 +2,7 @@ import { useState } from "react";
 import ExpenseFilter from "./components/ExpenseFilter";
 import ExpenseForm from "./components/ExpenseForm";
 import ExpenseList from "./components/ExpenseList";
-import { Categories, Expense } from "./types/ExpenseTypes";
+import { Categories, Expense } from "./entities/ExpenseTypes";
 
 const App = () => {
   const [expenses, setExpenses] = useState<Expense[]>([
