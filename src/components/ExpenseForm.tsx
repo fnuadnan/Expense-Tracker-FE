@@ -2,33 +2,26 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Expense, ExpenseFormData } from "../entities/ExpenseTypes";
+import useAddExpense from "../hooks/useAddExpense";
 
-interface Props {
-  addExpense: (expense: Expense) => void;
-}
-
-const expenseFormSchema = z.object({
-  description: z.string().min(3),
-  amount: z
-    .number({ invalid_type_error: "Amount is required" })
-    .min(1, { message: "Amount must be greater or equal to 1$" }),
-  category: z.enum(["Utilities", "Groceries", "Entertainment"], {
-    errorMap: () => ({ message: "Category is required" }),
-  }),
-});
-
-const ExpenseForm = ({ addExpense }: Props) => {
+const ExpenseForm = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<ExpenseFormData>({
     resolver: zodResolver(expenseFormSchema),
   });
+
+  const addExpenseMutation = useAddExpense();
+
   return (
     <form
       className="p-3"
-      onSubmit={handleSubmit((data: Expense) => addExpense(data))}
+      onSubmit={handleSubmit((data: Expense) =>
+        addExpenseMutation.mutate(data, { onSuccess: () => reset() })
+      )}
     >
       <div className="mb-3">
         <label className="form-label" htmlFor="description">
@@ -80,5 +73,16 @@ const ExpenseForm = ({ addExpense }: Props) => {
     </form>
   );
 };
+
+// Form validation schema
+const expenseFormSchema = z.object({
+  description: z.string().min(3),
+  amount: z
+    .number({ invalid_type_error: "Amount is required" })
+    .min(1, { message: "Amount must be greater or equal to 1$" }),
+  category: z.enum(["Utilities", "Groceries", "Entertainment"], {
+    errorMap: () => ({ message: "Category is required" }),
+  }),
+});
 
 export default ExpenseForm;

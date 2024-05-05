@@ -4,12 +4,10 @@ interface Props {
   onSelectedCategory: (category: Categories) => void;
 }
 
-const ExpenseFilter = ({ onSelectedCategory }: Props) => {
+const ExpenseFilter = () => {
   return (
     <select
-      onChange={(event) =>
-        onSelectedCategory(event?.target.value as Categories)
-      }
+      onChange={(event) => console.log(event.target.value)}
       name="category"
       id="category"
       className="form-select"

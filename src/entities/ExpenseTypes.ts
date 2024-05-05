@@ -1,15 +1,14 @@
-
 export type Categories = "Entertainment" | "Utilities" | "Groceries";
 
 export interface Expense {
   _id?: number;
   description: string;
   amount: number;
-  category: Categories
+  category: Categories;
 }
 
-export type ExpenseFormData = {
+export interface ExpenseFormData {
   description: string;
   amount: number;
-  category: Categories
-};
+  category: Categories;
+}
