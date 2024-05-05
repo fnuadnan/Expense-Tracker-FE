@@ -1,14 +1,14 @@
-import { Categories } from "../types/ExpenseTypes";
+import { Categories } from "../entities/ExpenseTypes";
+import useExpenseStore from "../store";
 
-interface Props {
-  onSelectedCategory: (category: Categories) => void;
-}
-
-const ExpenseFilter = ({ onSelectedCategory }: Props) => {
+const ExpenseFilter = () => {
+  const setSelectedCategory = useExpenseStore(
+    (state) => state.setSelectedCategory
+  );
   return (
     <select
       onChange={(event) =>
-        onSelectedCategory(event?.target.value as Categories)
+        setSelectedCategory(event.target.value as Categories)
       }
       name="category"
       id="category"

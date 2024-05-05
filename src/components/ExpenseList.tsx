@@ -1,11 +1,19 @@
-import { Expense } from "../types/ExpenseTypes";
+import useDeleteExpense from "../hooks/useDeleteExpense";
+import useExpenses from "../hooks/useExpenses";
+import useExpenseStore from "../store";
 
-interface Props {
-  expenses: Expense[];
-  onDelete: (expenseId: number) => void;
-}
+const ExpenseList = () => {
+  // expenses
+  const { data: expenses } = useExpenses();
+  // deleteExpense
+  const { mutate: deleteExpense } = useDeleteExpense();
+  // selectedCategory
+  const selectedCategory = useExpenseStore((s) => s.selectedCategory);
+  // filteredExpenses
+  const filteredExpenses = expenses?.filter((expense) =>
+    selectedCategory ? expense.category === selectedCategory : true
+  );
 
-const ExpenseList = ({ expenses, onDelete }: Props) => {
   return (
     <table className="table table-bordered">
       <thead>
@@ -17,7 +25,7 @@ const ExpenseList = ({ expenses, onDelete }: Props) => {
         </tr>
       </thead>
       <tbody>
-        {expenses.map((expense, index) => (
+        {filteredExpenses?.map((expense, index) => (
           <tr key={index}>
             <td>{expense.description}</td>
             <td>{expense.amount}$</td>
@@ -25,7 +33,7 @@ const ExpenseList = ({ expenses, onDelete }: Props) => {
             <td>
               <button
                 className="btn btn-outline-danger"
-                onClick={() => expense._id && onDelete(expense._id)}
+                onClick={() => deleteExpense(expense._id ? expense._id : "")}
               >
                 Delete
               </button>
@@ -37,7 +45,10 @@ const ExpenseList = ({ expenses, onDelete }: Props) => {
         <tr>
           <td>Total</td>
           <td colSpan={4}>
-            {expenses.reduce((acc, ex) => acc + ex.amount, 0).toFixed(2)}$
+            {filteredExpenses
+              ?.reduce((acc, ex) => acc + ex.amount, 0)
+              .toFixed(2)}
+            $
           </td>
         </tr>
       </tfoot>

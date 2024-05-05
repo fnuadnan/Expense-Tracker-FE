@@ -1,19 +1,16 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { Expense } from "../entities/ExpenseTypes";
 import apiClient from "../services/api-client";
-import { Expense } from "../types/ExpenseTypes";
 
 const useExpenses = () => {
-  const [expenses, setExpenses] = useState<Expense[]>([]);
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    apiClient
-      .get<Expense[]>("/expenses")
-      .then((res) => setExpenses(res.data))
-      .catch((err) => setError(err));
-  }, []);
-
-  return { expenses, error };
+  return useQuery<Expense[]>({
+    queryKey: ["expenses"],
+    queryFn: async () =>
+      apiClient
+        .get("/expenses")
+        .then((response) => response.data)
+        .catch((err) => console.log(err)),
+  });
 };
 
 export default useExpenses;
