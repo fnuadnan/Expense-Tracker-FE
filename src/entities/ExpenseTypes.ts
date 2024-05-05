@@ -1,7 +1,7 @@
 export type Categories = "Entertainment" | "Utilities" | "Groceries";
 
 export interface Expense {
-  _id?: number;
+  _id?: string;
   description: string;
   amount: number;
   category: Categories;

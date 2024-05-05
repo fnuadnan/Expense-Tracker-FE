@@ -2,14 +2,14 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Expense } from "../entities/ExpenseTypes";
 import apiClient from "../services/api-client";
 
-// optimistic update
-const useAddExpense = () => {
-  const queryClient = useQueryClient(); // Initialize queryClient
+const useDeleteExpense = () => {
+  const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (expense: Expense) => apiClient.post("/expenses", expense),
+    mutationFn: (expenseId: string) =>
+      apiClient.delete(`/expenses/${expenseId}`),
 
-    onMutate: async (newExpense: Expense) => {
+    onMutate: async (expenseId: string) => {
       await queryClient.cancelQueries({ queryKey: ["expenses"] });
       const previousExpenses = queryClient.getQueryData<Expense[]>([
         "expenses",
@@ -19,9 +19,12 @@ const useAddExpense = () => {
       if (previousExpenses) {
         queryClient.setQueryData<Expense[]>(
           ["expenses"],
-          [...previousExpenses, newExpense]
+          previousExpenses?.filter(
+            (expense: Expense) => expense._id !== expenseId
+          )
         );
       }
+
       return { previousExpenses };
     },
     onError: (_err, _newExpense, context) => {
@@ -31,23 +34,30 @@ const useAddExpense = () => {
       }
     },
     onSuccess: () => {
-      // Invalidate the query to refetch the updated data
       queryClient.invalidateQueries({ queryKey: ["expenses"] });
     },
   });
 };
 
-// pesimistic update
-// const useAddExpense = () => {
-//   const queryClient = useQueryClient();
+// pesimictic update
+// const useDeleteExpense = () => {
+// 	const queryClient = useQueryClient();
 
-//   return useMutation({
-//     mutationFn: (expense: Expense) => apiClient.post("/expenses", expense),
-//     onSuccess: () => {
-//       // Invalidate the query to refetch the updated data
-//       queryClient.invalidateQueries({ queryKey: ["expenses"] });
-//     },
-//   });
-// };
+// 	return useMutation({
+// 	  mutationFn: (expenseId: number) =>
+// 		apiClient.delete(`/expenses/${expenseId}`),
 
-export default useAddExpense;
+// 	  // No need for onMutate in pessimistic updates
+
+// 	  onError: (err) => {
+// 		// No need to handle optimistic updates in case of errors
+// 		console.error("An error occurred while deleting the expense:", err);
+// 	  },
+
+// 	  onSuccess: () => {
+// 		queryClient.invalidateQueries({ queryKey: ["expenses"] });
+// 	  },
+// 	});
+//   };
+
+export default useDeleteExpense;
