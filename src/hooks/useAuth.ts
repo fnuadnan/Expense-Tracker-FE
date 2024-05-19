@@ -1,6 +1,6 @@
-import axios from "axios";
 import { useState } from "react";
 import { IUserLogin } from "../entities/IUser";
+import apiClient from "../services/api-client";
 
 const useAuth = () => {
   const [error, setError] = useState<string | null>(null);
@@ -11,17 +11,17 @@ const useAuth = () => {
     setError(null);
 
     try {
-      const res = await axios.post("http://localhost:4000/api/auth", user, {
+      const res = await apiClient.post("/auth", user, {
         withCredentials: true,
       });
       console.log(res.data);
 
-      return true;
+      return true; // Success
     } catch (error) {
       setError("Authentication failed");
       console.error("Error: ", error);
 
-      return false;
+      return false; // Fail
     }
   };
 
