@@ -13,7 +13,7 @@ import useSignUp from "../../hooks/useSignUp";
 const LoginSignup = () => {
   const [action, setAction] = useState("Login");
 
-  const { register, handleSubmit } = useForm<IUserLogin | IUserSignUp>();
+  const { register, handleSubmit, reset } = useForm<IUserLogin | IUserSignUp>();
   const { login } = useAuth();
   const { signup } = useSignUp();
   const navigate = useNavigate();
@@ -31,6 +31,11 @@ const LoginSignup = () => {
         navigate("/signup");
       }
     }
+  };
+
+  const handleActionChange = (newAction: string) => {
+    setAction(newAction);
+    reset(); // Reset the form fields when changing actions
   };
 
   return (
@@ -86,7 +91,7 @@ const LoginSignup = () => {
           <div
             className={action === "Sign Up" ? "submit" : "submit gray"}
             onClick={() => {
-              setAction("Sign Up");
+              handleActionChange("Sign Up");
             }}
           >
             Sign Up
@@ -94,7 +99,7 @@ const LoginSignup = () => {
           <div
             className={action === "Login" ? "submit" : "submit gray"}
             onClick={() => {
-              setAction("Login");
+              handleActionChange("Login");
             }}
           >
             Login
