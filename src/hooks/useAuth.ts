@@ -11,10 +11,12 @@ const useAuth = () => {
     setError(null);
 
     try {
-      const res = await apiClient.post("/auth", user, {
+      await apiClient.post("/auth", user, {
         withCredentials: true,
       });
-      console.log(res.data);
+
+      // Only log non-sensitive information
+      console.log("User authenticated successfully");
 
       return true; // Success
     } catch (error) {
