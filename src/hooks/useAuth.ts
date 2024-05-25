@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { IUserLogin } from "../entities/IUser";
 import apiClient from "../services/api-client";
+import encrypt from "../Utils/encrypt";
 
 const useAuth = () => {
   const [error, setError] = useState<string | null>(null);
@@ -11,12 +12,18 @@ const useAuth = () => {
     setError(null);
 
     try {
-      await apiClient.post("/auth", user, {
-        withCredentials: true,
-      });
+      // Encrypt user data
+      const encryptedData = encrypt(user);
+
+      await apiClient.post(
+        "/auth",
+        { encryptedData },
+        {
+          withCredentials: true,
+        }
+      );
 
       // Only log non-sensitive information
-      console.log("User authenticated successfully");
 
       return true; // Success
     } catch (error) {
